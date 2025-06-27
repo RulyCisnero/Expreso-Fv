@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { CheckCircle, Clock, Truck, XCircle } from "lucide-react"
+import { CheckCircle, Clock, Truck, XCircle, User, Trash2  } from "lucide-react"
 import { Button } from "@/components/ui/button"; // Asegurate que apunta bien a tu archivo
 import { Edit } from "lucide-react"; // Asegurate que apunta bien a tu archivo
 import "../types";
+import  {formatearFecha}  from "../lib/utils";
 
 import {
   Table,
@@ -13,16 +14,8 @@ import {
   TableCell,
 } from "@/components/ui/table"; // Asegurate que apunta bien a tu archivo
 
-/*  
-export function EncomiendaTableStates() {
-  // ya tenés autocompletado en VS Code sobre `props` y `encomiendas`
-}
- */
 
- /**
- * @param {EncomiendaTableProps} props
- */
-function EncomiendaTable({ encomienda, onView, onEdit, onDelete, onAsignarChofer }) {
+function EncomiendaTable() {
   const [encomiendas, setEncomiendas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,7 +42,7 @@ function EncomiendaTable({ encomienda, onView, onEdit, onDelete, onAsignarChofer
   if (loading) return <p className="p-4">Cargando encomiendas...</p>;
   if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
 
-  function iconoEstado(estado){
+  function iconoEstado(estado) {
     switch (estado) {
       case "Pendiente":
         return <Clock className="h-4 w-4 text-yellow-500" />
@@ -62,19 +55,27 @@ function EncomiendaTable({ encomienda, onView, onEdit, onDelete, onAsignarChofer
     }
   }
 
-  const getEstadoText = (estado) => {
+ const getEstadoText = (estado) => {
     switch (estado) {
       case "Pendiente":
         return "Pendiente"
-      case "en_transito":
+      case "En tránsito":
         return "En tránsito"
       case "Entregada":
         return "Entregada"
       case "Cancelado":
         return "Cancelado"
     }
-  }
- 
+  } 
+
+  /** @type { Object } EncomiendaTableStates */
+  const EncomiendaTableStates = {
+    encomienda: [],
+    onView: () => {},
+    onEdit: () => {},
+    onDelete: () => {},
+    onAsignarChofer: () => {},
+  };
 
   return (
     <div className="p-6 rounded-md border ">
@@ -87,37 +88,57 @@ function EncomiendaTable({ encomienda, onView, onEdit, onDelete, onAsignarChofer
             <TableHead>Destino</TableHead>
             <TableHead>Dir Destino</TableHead>
             <TableHead>Estado</TableHead>
+            <TableHead>Fecha</TableHead>
             <TableHead>Chofer</TableHead>
+            <TableHead>Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {encomiendas.map((e) => (
-            <TableRow key={e.id}>
-              <TableCell>{e.cliente.nombre}</TableCell>
-              <TableCell>{e.origen}</TableCell>
-              <TableCell>{e.destino}</TableCell>
-              <TableCell>{e.direccion_destino}</TableCell>
-              <TableCell>{e.estado}
-                 <div className="flex items-center gap-2">
-                  {iconoEstado(e.estado)}
-                  {/* <span>{getEstadoText(e.estado)}</span> */}
+          {encomiendas.map((encomienda) => (
+            <TableRow key={encomienda.id}
+              className="cursor-pointer hover:bg-muted/50 "
+              onClick={() => {
+                EncomiendaTableStates.onView(encomienda);
+                console.log("se hizo click en la encomienda", encomienda.cliente.nombre);
+              }}
+            >
+              <TableCell className="font-medium"><strong>{encomienda.cliente.nombre}</strong></TableCell>
+              <TableCell>{encomienda.origen}</TableCell>
+              <TableCell>{encomienda.destino}</TableCell>
+              <TableCell>{encomienda.direccion_destino}</TableCell>
+              <TableCell>{/* encomienda.estado */}
+                <div className="flex items-center p-2 gap-2">
+                  {iconoEstado(encomienda.estado)}
+                  <span>
+                    {getEstadoText(encomienda.estado)}
+                  </span>
                 </div>
               </TableCell>
-              <TableCell>{e.chofer.nombre}</TableCell>
-            </TableRow>
-          ))}
-          <TableCell className="text-right">
+              <TableCell>{formatearFecha(encomienda.fecha_creacion)}</TableCell>
+              <TableCell>{encomienda.chofer.nombre}</TableCell>
+              <TableCell className="text-right">
                 <div className="flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" onClick={() => onEdit(encomienda)}>
+                  <Button variant="ghost" size="icon" onClick={() => EncomiendaTableStates.onEdit(encomienda)}>
                     <Edit className="h-4 w-4" />
                     <span className="sr-only">Editar</span>
                   </Button>
+                   <Button variant="ghost" size="icon" onClick={() => EncomiendaTableStates.onAsignarChofer(encomienda)}>
+                    <User className="h-4 w-4" />
+                    <span className="sr-only">Asignar chofer</span>
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => EncomiendaTableStates.onDelete(encomienda)}>
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Eliminar</span>
+                  </Button>  
                 </div>
+
               </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
   );
-}
+};
 
 export default EncomiendaTable;

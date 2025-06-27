@@ -1,31 +1,50 @@
 /**
  * @typedef {Object} Chofer
+ * @property {number} id
  * @property {string} nombre
- * @property {string} apellido
+ * @property {string} destinos
  */
 
 /**
- * @typedef {"pendiente" | "en_transito" | "entregado" | "cancelado"} EstadoEncomienda
- * @typedef {"baja" | "media" | "alta"} PrioridadEncomienda
+ * @typedef {"Pendiente" | "En tránsito" | "Listo para reparto" | "Entregada"} EstadoEncomienda
+ * @typedef {"SALIENTE" | "ENTRANTE"} TipoEncomienda
  */
 
 /**
  * @typedef {Object} Encomienda
- * @property {string} id
- * @property {string} codigo
- * @property {string} remitente
- * @property {string} destinatario
+ * @property {number} id
+ * @property {TipoEncomienda} tipo
+ * @property {string} origen
+ * @property {string} destino
+ * @property {string} direccion_destino
  * @property {EstadoEncomienda} estado
- * @property {PrioridadEncomienda} prioridad
  * @property {string} fechaCreacion
- * @property {Chofer|null} chofer
+ * @property {string} descripcion
+ * @property {string} clienteId
+ * @property {string} choferId
  */
 
 /**
- * @typedef {Object} EncomiendaTableProps
- * @property {Encomienda[]} encomiendas
+ * @typedef {Object} Cliente
+ * @property {number} id 
+ * @property {string} nombre 
+ * @property {string} apellido
+ * @property {string} direccion_local
+ * @property {string} telefono
+ * @property {string} email 
+ */
+
+
+/**
+ * @typedef {Object} EncomiendaTableStates
+ * @property {Encomienda[]} encomienda
  * @property {(encomienda: Encomienda) => void} onView
  * @property {(encomienda: Encomienda) => void} onEdit
  * @property {(encomienda: Encomienda) => void} onDelete
  * @property {(encomienda: Encomienda) => void} onAsignarChofer
  */
+
+// Exportamos las definiciones para JSDoc (esto es solo documentación)
+export const EncomiendaTypes = {
+  // Este objeto está vacío, solo sirve para que JSDoc reconozca las definiciones
+}
