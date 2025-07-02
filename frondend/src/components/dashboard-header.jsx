@@ -1,5 +1,4 @@
 import { Bell, Search, Settings } from "lucide-react"
-//import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export function DashboardHeader() {
@@ -13,7 +12,7 @@ export function DashboardHeader() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Buscar encomiendas..."
+            placeholder="Buscar encomienda..."
             className="w-[200px] pl-8 md:w-[260px] lg:w-[320px]"
           />
          

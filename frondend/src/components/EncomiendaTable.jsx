@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button"; // Asegurate que apunta bien a 
 import { Edit } from "lucide-react"; // Asegurate que apunta bien a tu archivo
 import "../types";
 import  {formatearFecha}  from "../lib/utils";
+// @ts-check
+/// <reference path="../types.js" />
+
 
 import {
   Table,
@@ -14,8 +17,21 @@ import {
   TableCell,
 } from "@/components/ui/table"; // Asegurate que apunta bien a tu archivo
 
+/**
+ * @typedef {Object} EncomiendaTableStates
+ * @property {Encomienda[]} encomienda
+ * @property {(encomienda: Encomienda) => void} onView
+ * @property {(encomienda: Encomienda) => void} onEdit
+ * @property {(encomienda: Encomienda) => void} onDelete
+ * @property {(encomienda: Encomienda) => void} onAsignarChofer
+ */
 
-function EncomiendaTable() {
+/**
+ * @param {EncomiendaTableStates} props
+ */
+
+
+export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }) {
   const [encomiendas, setEncomiendas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -68,18 +84,9 @@ function EncomiendaTable() {
     }
   } 
 
-  /** @type { Object } EncomiendaTableStates */
-  const EncomiendaTableStates = {
-    encomienda: [],
-    onView: () => {},
-    onEdit: () => {},
-    onDelete: () => {},
-    onAsignarChofer: () => {},
-  };
 
   return (
-    <div className="p-6 rounded-md border ">
-      <h2 className="text-xl font-bold mb-4">Seguimiento de encomiendas</h2>
+    <div className="rounded-md border border-gray-200 shadow-sm overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>
@@ -98,8 +105,8 @@ function EncomiendaTable() {
             <TableRow key={encomienda.id}
               className="cursor-pointer hover:bg-muted/50 "
               onClick={() => {
-                EncomiendaTableStates.onView(encomienda);
-                console.log("se hizo click en la encomienda", encomienda.cliente.nombre);
+                onView(encomienda);
+                console.log("se hizo click en la encomienda", encomienda.direccion_destino);
               }}
             >
               <TableCell className="font-medium"><strong>{encomienda.cliente.nombre}</strong></TableCell>
@@ -118,20 +125,19 @@ function EncomiendaTable() {
               <TableCell>{encomienda.chofer.nombre}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" onClick={() => EncomiendaTableStates.onEdit(encomienda)}>
+                  <Button variant="ghost" size="icon" onClick={() => onEdit(encomienda)}>
                     <Edit className="h-4 w-4" />
                     <span className="sr-only">Editar</span>
                   </Button>
-                   <Button variant="ghost" size="icon" onClick={() => EncomiendaTableStates.onAsignarChofer(encomienda)}>
+                   <Button variant="ghost" size="icon" onClick={() => onAsignarChofer(encomienda)}>
                     <User className="h-4 w-4" />
                     <span className="sr-only">Asignar chofer</span>
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => EncomiendaTableStates.onDelete(encomienda)}>
+                  <Button variant="ghost" size="icon" onClick={() => onDelete(encomienda)}>
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Eliminar</span>
                   </Button>  
                 </div>
-
               </TableCell>
             </TableRow>
           ))}
@@ -141,4 +147,4 @@ function EncomiendaTable() {
   );
 };
 
-export default EncomiendaTable;
+

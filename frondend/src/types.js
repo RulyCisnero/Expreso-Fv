@@ -1,3 +1,6 @@
+// @ts-check
+// @typedef
+
 /**
  * @typedef {Object} Chofer
  * @property {number} id
@@ -42,6 +45,25 @@
  * @property {(encomienda: Encomienda) => void} onEdit
  * @property {(encomienda: Encomienda) => void} onDelete
  * @property {(encomienda: Encomienda) => void} onAsignarChofer
+ */
+
+/** 
+ * @typedef {Object} EncomiendaDetailProps
+ * @property {Encomienda} encomienda
+ * @property {boolean} open
+ * @property {() => void} onClose
+ */
+/**
+ * @param {EncomiendaDetailProps} props
+ */
+
+
+/**
+ * @typedef {Object} EncomiendaFormProps
+ * @property {boolean} open
+ * @property {() => void} onClose
+ * @property {(encomienda: Partial<Encomienda>) => void} onSave
+ * @property {Encomienda} [encomienda]
  */
 
 // Exportamos las definiciones para JSDoc (esto es solo documentación)
