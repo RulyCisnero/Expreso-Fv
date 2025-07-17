@@ -1,26 +1,17 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import "../types.js"
 import { formatearFecha } from "@/lib/utils"
 import { CheckCircle, Clock, Truck, XCircle } from "lucide-react"
-// @ts-check
-/// <reference path="../types.js" />
+import type { Encomienda } from "@/types"
 
+interface EncomiendaDetailProps {
+  encomienda: Encomienda | null
+  open: boolean
+  onClose: () => void
+}
 
-
-/** 
-* @type {Object} EncomiendaDetailProps
-* @property {Encomienda} encomienda
-* @property {boolean} open
-* @property {() => void} onClose
-*/
-
-/**
- * @param {EncomiendaDetailProps} props
- */
-
-export function EncomiendaDetail({ encomienda, open, onClose }) {
+export function EncomiendaDetail({ encomienda, open, onClose }:EncomiendaDetailProps) {
     if (!encomienda) return null
-    const getEstadoIcon = (estado) => {
+    const getEstadoIcon = (estado: Encomienda["estado"]) => {
         switch (estado) {
             case "Pendiente":
                 return <Clock className="h-4 w-4 text-yellow-500" />
@@ -28,12 +19,10 @@ export function EncomiendaDetail({ encomienda, open, onClose }) {
                 return <Truck className="h-4 w-4 text-blue-500" />
             case "Entregada":
                 return <CheckCircle className="h-4 w-4 text-green-500" />
-            case "Cancelado":
-                return <XCircle className="h-4 w-4 text-red-500" />
         }
     }
 
-    const getEstadoText = (estado) => {
+    const getEstadoText = (estado: Encomienda["estado"]) => {
         switch (estado) {
             case "Pendiente":
                 return "Pendiente"
@@ -41,8 +30,6 @@ export function EncomiendaDetail({ encomienda, open, onClose }) {
                 return "En tránsito"
             case "Entregada":
                 return "Entregada"
-            case "Cancelado":
-                return "Cancelado"
         }
     }
 
@@ -50,7 +37,7 @@ export function EncomiendaDetail({ encomienda, open, onClose }) {
         <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle className="text-xl">Detalles de Encomienda - {encomienda.id}</DialogTitle>
+                    <DialogTitle className="text-xl">Detalles de Encomienda - ID {encomienda.id}</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-6 py-4">
                     <div className="flex justify-between items-center">
@@ -107,7 +94,7 @@ export function EncomiendaDetail({ encomienda, open, onClose }) {
                             <h3 className="font-semibold text-sm text-muted-foreground">Chofer asignado</h3>
                             <p className="mt-1">
                                 {encomienda.chofer
-                                    ? `${encomienda.chofer.nombre} ${encomienda.chofer.apellido}`
+                                    ? `${encomienda.chofer.nombre}`
                                     : "Sin asignar"}
                             </p>
                         </div>

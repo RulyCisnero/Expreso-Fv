@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import { CheckCircle, Clock, Truck, XCircle, User, Trash2  } from "lucide-react"
 import { Button } from "@/components/ui/button"; // Asegurate que apunta bien a tu archivo
 import { Edit } from "lucide-react"; // Asegurate que apunta bien a tu archivo
-import "../types";
 import  {formatearFecha}  from "../lib/utils";
-// @ts-check
-/// <reference path="../types.js" />
-
+import type { Encomienda } from "@/types"
 
 import {
   Table,
@@ -17,21 +14,15 @@ import {
   TableCell,
 } from "@/components/ui/table"; // Asegurate que apunta bien a tu archivo
 
-/**
- * @typedef {Object} EncomiendaTableStates
- * @property {Encomienda[]} encomienda
- * @property {(encomienda: Encomienda) => void} onView
- * @property {(encomienda: Encomienda) => void} onEdit
- * @property {(encomienda: Encomienda) => void} onDelete
- * @property {(encomienda: Encomienda) => void} onAsignarChofer
- */
+interface EncomiendaTableProps {
+  encomiendas: Encomienda[]
+  onView: (encomienda: Encomienda) => void
+  onEdit: (encomienda: Encomienda) => void
+  onDelete: (encomienda: Encomienda) => void
+  onAsignarChofer: (encomienda: Encomienda) => void
+}
 
-/**
- * @param {EncomiendaTableStates} props
- */
-
-
-export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }) {
+export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:EncomiendaTableProps) {
   const [encomiendas, setEncomiendas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -58,7 +49,7 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }) {
   if (loading) return <p className="p-4">Cargando encomiendas...</p>;
   if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
 
-  function iconoEstado(estado) {
+  function iconoEstado(estado:Encomienda["estado"]) {
     switch (estado) {
       case "Pendiente":
         return <Clock className="h-4 w-4 text-yellow-500" />
@@ -66,12 +57,10 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }) {
         return <Truck className="h-4 w-4 text-blue-500" />
       case "Entregada":
         return <CheckCircle className="h-4 w-4 text-green-500" />
-      case "Cancelado":
-        return <XCircle className="h-4 w-4 text-red-500" />
     }
   }
 
- const getEstadoText = (estado) => {
+ const getEstadoText = (estado:Encomienda["estado"]) => {
     switch (estado) {
       case "Pendiente":
         return "Pendiente"
@@ -79,11 +68,8 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }) {
         return "En tránsito"
       case "Entregada":
         return "Entregada"
-      case "Cancelado":
-        return "Cancelado"
     }
   } 
-
 
   return (
     <div className="rounded-md border border-gray-200 shadow-sm overflow-hidden">
@@ -102,7 +88,8 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }) {
         </TableHeader>
         <TableBody>
           {encomiendas.map((encomienda) => (
-            <TableRow key={encomienda.id}
+            <TableRow 
+              key={encomienda.id}
               className="cursor-pointer hover:bg-muted/50 "
               onClick={() => {
                 onView(encomienda);

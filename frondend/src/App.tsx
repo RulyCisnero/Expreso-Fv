@@ -1,4 +1,5 @@
 import './App.css';
+import '../src/styles/global.css';
 import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from './components/dashboard-header';
 import { EncomiendaTable } from './components/EncomiendaTable';
@@ -7,7 +8,7 @@ import { EncomiendaForm } from './components/encomienda-form';
 import { Button } from "@/components/ui/button";
 import { Plus } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast"
-import "../src/types.js";
+import "./types.js";
 
 function App() {
   const [encomiendas, setEncomiendas] = useState([]);
