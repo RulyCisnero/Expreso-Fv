@@ -1,10 +1,9 @@
-
-
 import 'dotenv/config';
 import express from 'express';
 import cors from "cors";
-import pool from './database/connectionPostgreSQL.js';
-import router  from './routes/apiRoutes.js';
+import pool from './database/connectionPostgreSQL.ts';
+//import router  from './routes/apiRoutes.js';
+import routes from './routes/index.ts'; // Import the router for encomienda routes
 
 //dotenv.config();
 
@@ -16,7 +15,7 @@ server.use(express.json());
 server.use(cors());
 
 // Importar las rutas
-server.use('/api', router);
+server.use('/api',routes);
 
 //testeando conexion a la base de datos PostgreSQL
 server.get("/", async (req,res)=>{

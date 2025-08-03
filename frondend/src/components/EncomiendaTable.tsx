@@ -3,7 +3,8 @@ import { CheckCircle, Clock, Truck, XCircle, User, Trash2  } from "lucide-react"
 import { Button } from "@/components/ui/button"; // Asegurate que apunta bien a tu archivo
 import { Edit } from "lucide-react"; // Asegurate que apunta bien a tu archivo
 import  {formatearFecha}  from "../lib/utils";
-import type { Encomienda } from "@/types"
+//import type { Encomienda } from "@/types"
+import { IEncomienda,IEncomiendaVista } from "../interface";
 
 import {
   Table,
@@ -14,22 +15,30 @@ import {
   TableCell,
 } from "@/components/ui/table"; // Asegurate que apunta bien a tu archivo
 
-interface EncomiendaTableProps {
+/* interface EncomiendaTableProps {
   encomiendas: Encomienda[]
   onView: (encomienda: Encomienda) => void
   onEdit: (encomienda: Encomienda) => void
   onDelete: (encomienda: Encomienda) => void
   onAsignarChofer: (encomienda: Encomienda) => void
 }
+ */
+interface EncomiendaTableProps {
+  encomiendas: IEncomiendaVista[]
+  onView: (encomienda: IEncomiendaVista) => void
+  onEdit: (encomienda: IEncomiendaVista) => void
+  onDelete: (encomienda: IEncomiendaVista) => void
+  onAsignarChofer: (encomienda: IEncomiendaVista) => void
+}
+
 
 export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:EncomiendaTableProps) {
-  const [encomiendas, setEncomiendas] = useState([]);
+  const [encomiendas, setEncomiendas] = useState<IEncomiendaVista[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect: cuando el componente se monta, llamamos a la API
   useEffect(() => {
-    fetch("http://localhost:5100/api/encomiendas") // Cambia el puerto si usás otro
+    fetch("http://localhost:5100/api/encomiendas/")
       .then((res) => {
         if (!res.ok) {
           throw new Error("No se pudieron cargar las encomiendas");
@@ -49,7 +58,7 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
   if (loading) return <p className="p-4">Cargando encomiendas...</p>;
   if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
 
-  function iconoEstado(estado:Encomienda["estado"]) {
+  function iconoEstado(estado:IEncomiendaVista["estado"]) {
     switch (estado) {
       case "Pendiente":
         return <Clock className="h-4 w-4 text-yellow-500" />
@@ -60,7 +69,7 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
     }
   }
 
- const getEstadoText = (estado:Encomienda["estado"]) => {
+ const getEstadoText = (estado:IEncomiendaVista["estado"]) => {
     switch (estado) {
       case "Pendiente":
         return "Pendiente"
@@ -97,8 +106,8 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
               }}
             >
               <TableCell className="font-medium"><strong>{encomienda.cliente.nombre}</strong></TableCell>
-              <TableCell>{encomienda.origen}</TableCell>
-              <TableCell>{encomienda.destino}</TableCell>
+              <TableCell>{encomienda.origen_id}</TableCell>
+              <TableCell>{encomienda.destino_id}</TableCell>
               <TableCell>{encomienda.direccion_destino}</TableCell>
               <TableCell>{/* encomienda.estado */}
                 <div className="flex items-center p-2 gap-2">
@@ -109,7 +118,7 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
                 </div>
               </TableCell>
               <TableCell>{formatearFecha(encomienda.fecha_creacion)}</TableCell>
-              <TableCell>{encomienda.chofer.nombre}</TableCell>
+              <TableCell>{encomienda.chofer?.nombre}, {encomienda.chofer?.apellido}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                   <Button variant="ghost" size="icon" onClick={() => onEdit(encomienda)}>

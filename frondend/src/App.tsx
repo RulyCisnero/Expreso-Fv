@@ -121,9 +121,9 @@ function App() {
           <EncomiendaTable
             encomiendas={encomiendas}
             onView={handleViewEncomienda}
-            //onEdit={handleEditEncomienda}
-            //onDelete={handleDeleteEncomienda}
-            //onAsignarChofer={handleAsignarChofer}
+            onEdit={handleEditEncomienda}
+            onDelete={handleDeleteEncomienda}
+            onAsignarChofer={handleAsignarChofer}
           />
         )}
 		</main>

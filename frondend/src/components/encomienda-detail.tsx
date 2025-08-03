@@ -1,17 +1,18 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { formatearFecha } from "@/lib/utils"
 import { CheckCircle, Clock, Truck, XCircle } from "lucide-react"
-import type { Encomienda } from "@/types"
+//import type { Encomienda } from "@/types"
+import { IEncomienda,IEncomiendaVista } from "../interface";
 
 interface EncomiendaDetailProps {
-  encomienda: Encomienda | null
+  encomienda: IEncomiendaVista | null
   open: boolean
   onClose: () => void
 }
 
 export function EncomiendaDetail({ encomienda, open, onClose }:EncomiendaDetailProps) {
     if (!encomienda) return null
-    const getEstadoIcon = (estado: Encomienda["estado"]) => {
+    const getEstadoIcon = (estado: IEncomiendaVista["estado"]) => {
         switch (estado) {
             case "Pendiente":
                 return <Clock className="h-4 w-4 text-yellow-500" />
@@ -22,7 +23,7 @@ export function EncomiendaDetail({ encomienda, open, onClose }:EncomiendaDetailP
         }
     }
 
-    const getEstadoText = (estado: Encomienda["estado"]) => {
+    const getEstadoText = (estado: IEncomiendaVista["estado"]) => {
         switch (estado) {
             case "Pendiente":
                 return "Pendiente"
@@ -49,23 +50,23 @@ export function EncomiendaDetail({ encomienda, open, onClose }:EncomiendaDetailP
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <h3 className="font-semibold text-sm text-muted-foreground">Remitente</h3>
-                            <p className="mt-1">{encomienda.origen}</p>
+                            <h3 className="font-semibold text-sm text-muted-foreground">Cliente</h3>
+                            <p className="mt-1">{encomienda.cliente.nombre}, {encomienda.cliente.apellido}</p>
                         </div>
-                        <div>
+                       {/*  <div>
                             <h3 className="font-semibold text-sm text-muted-foreground">Destinatario</h3>
-                            <p className="mt-1">{encomienda.direccion_destino}</p>
-                        </div>
+                            <p className="mt-1">{encomienda.direccion_destino} - {encomienda.destino_id}</p>
+                        </div> */}
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                         <div>
                             <h3 className="font-semibold text-sm text-muted-foreground">Dirección de origen</h3>
-                            <p className="mt-1">{encomienda.origen}</p>
+                            <p className="mt-1">{encomienda.cliente.direccion_local}, {encomienda.origen_id}</p>
                         </div>
                         <div>
                             <h3 className="font-semibold text-sm text-muted-foreground">Dirección de destino</h3>
-                            <p className="mt-1">{encomienda.direccion_destino}</p>
+                            <p className="mt-1">{encomienda.direccion_destino}, {encomienda.destino_id}</p>
                         </div>
                     </div>
 
@@ -74,14 +75,14 @@ export function EncomiendaDetail({ encomienda, open, onClose }:EncomiendaDetailP
                             <h3 className="font-semibold text-sm text-muted-foreground">Fecha de creación</h3>
                             <p className="mt-1">{formatearFecha(encomienda.fecha_creacion)}</p>
                         </div>
-                        <div>
+                        {/* <div>
                             <h3 className="font-semibold text-sm text-muted-foreground">Fecha de entrega</h3>
                             <p className="mt-1">{encomienda.fecha_creacion ? formatearFecha(encomienda.fecha_creacion) : "Pendiente"}</p>
                         </div>
                         <div>
                             <h3 className="font-semibold text-sm text-muted-foreground">Peso</h3>
                             <p className="mt-1">{ } kg</p>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div>
@@ -94,13 +95,13 @@ export function EncomiendaDetail({ encomienda, open, onClose }:EncomiendaDetailP
                             <h3 className="font-semibold text-sm text-muted-foreground">Chofer asignado</h3>
                             <p className="mt-1">
                                 {encomienda.chofer
-                                    ? `${encomienda.chofer.nombre}`
+                                    ? `${encomienda.chofer.nombre}, ${encomienda.chofer.apellido}`
                                     : "Sin asignar"}
                             </p>
                         </div>
                         <div>
                             <h3 className="font-semibold text-sm text-muted-foreground">Precio</h3>
-                            <p className="mt-1 font-medium">${/* {encomienda.precio.toFixed(2)} */}</p>
+                            <p className="mt-1 font-medium">${encomienda.precio} </p>
                         </div>
                     </div>
                 </div>

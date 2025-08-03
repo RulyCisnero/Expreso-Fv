@@ -1,34 +1,6 @@
-export interface localidad{
-  id:number;
-  nombre:string;
-}
-
-export interface Chofer {
-  id: number;
-  nombre: string;
-  apellido: string;
-  id_localidad: localidad["id"];
-}
-
-export interface ICliente{
-    id: number;
-    nombre: string;
-    apellido: string;
-    direccion_local: string;
-    telefono: string;
-    email: string;
-    id_localidad: number;
-}
-
-export interface IClienteVista{
-    id: number;
-    nombre: string;
-    apellido: string;
-    direccion_local: string;
-    telefono: string;
-    email: string;
-    localidad: string;
-}
+import { ICliente } from "./cliente.ts";
+import { IChofer } from "./chofer.ts";
+import { Localidad } from "./localidad.ts";
 
   export interface IEncomienda {
     id?: number;
@@ -49,7 +21,7 @@ export interface IClienteVista{
     tipo: string;
     estado: string;
     direccion_destino: string;
-    fecha_creacion: string;
+    fecha_creacion: Date;
     descripcion: string;
     precio?: number;
     origen_id: number;

@@ -85,6 +85,7 @@ export function EncomiendaForm({ open, onClose, onSave, encomienda }) {
     onSave(formData)
   }
 
+//Componente para crear o editar encomiendas //formulario
     return (
         <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="sm:max-w-[600px]">
