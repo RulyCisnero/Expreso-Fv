@@ -2,6 +2,7 @@ import { ICliente } from "./cliente.ts";
 import { IChofer } from "./chofer.ts";
 import { Localidad } from "./localidad.ts";
 
+/* 
   export interface IEncomienda {
     id?: number;
     tipo: string;
@@ -15,7 +16,6 @@ import { Localidad } from "./localidad.ts";
     origen_id: number;
     destino_id: number;
   }
-
   export interface IEncomiendaVista {
     id?: number;
     tipo: string;
@@ -39,3 +39,42 @@ import { Localidad } from "./localidad.ts";
       destino_id: number | null;
     } | null;
   }
+ */
+type Estado = "Pendiente" | "Entregada";
+type Tipo = "Entrante" | "Saliente";
+
+export interface ILocalidad {
+    id: number;
+    nombre: string;
+}
+
+export interface IClienteVista {
+    id: number;
+    nombre: string;
+    apellido: string;
+    direccion_local: string;
+    telefono: string;
+    email: string;
+    localidad: ILocalidad;
+}
+
+export interface IChoferVista {
+    id: number;
+    nombre: string;
+    apellido: string;
+    localidad: ILocalidad;
+}
+
+export interface IEncomiendaVista {
+    id: number;
+    tipo: Tipo;
+    estado: Estado;
+    direccion_destino: string;
+    fecha_creacion: Date; // Ahora es Date
+    descripcion: string;
+    precio: number; // Ahora es número
+    origen: ILocalidad;
+    destino: ILocalidad;
+    cliente: IClienteVista;
+    chofer: IChoferVista | null; // Puede ser null
+}

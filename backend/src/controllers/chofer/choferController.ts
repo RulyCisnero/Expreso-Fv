@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import choferModel from '../../models/chofer/choferModel.ts';
-import { IChofer } from '../../interfaces/chofer.ts';
+//import { IChofer } from '../../interfaces/chofer.ts';
+import { IChofer, IChoferVista } from '../../interfaces/Index.ts';
 
 export class ChoferController {
     async createChofer(req: Request, res: Response): Promise<void> {
         try {
             const { nombre, apellido, destino_id } = req.body;
-            const newChofer = await choferModel.createChofer(nombre, apellido, destino_id);
+            const newChofer: IChofer = await choferModel.createChofer({ nombre, apellido, destino_id });
             res.status(201).json(newChofer);
         } catch (error) {
             console.error('Error en para crear chofer:', error);
@@ -17,12 +18,13 @@ export class ChoferController {
     async getChoferById(req: Request, res: Response): Promise<void> {
         try {
             const id = parseInt(req.params.id);
-            const chofer: IChofer | null = await choferModel.getChoferById(id);
+            const chofer: IChoferVista | null = await choferModel.getChoferById(id);
             if (!chofer) {
                 res.status(404).json({ message: 'Chofer con ese ID no existe' });
                 return;
             }
             res.status(200).json(chofer);
+            console.log('Chofer encontrado:', chofer);
         } catch (error) {
             console.error('Error para obtener chofer', error)
             res.status(500).json({ message: 'Error en el servidor al obtener chofer' });
@@ -31,7 +33,7 @@ export class ChoferController {
 
     async getAllChoferes(req: Request, res: Response): Promise<void> {
         try {
-            const choferes: IChofer[] = await choferModel.getAllChoferes();
+            const choferes: IChoferVista[] = await choferModel.getAllChoferes();
             res.status(200).json(choferes);
         } catch (error) {
             console.error('Error al obtener los choferes: ', error);

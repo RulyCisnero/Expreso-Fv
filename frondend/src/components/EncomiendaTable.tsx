@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { CheckCircle, Clock, Truck, XCircle, User, Trash2  } from "lucide-react"
+import { CheckCircle, Clock, Truck, XCircle, User, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"; // Asegurate que apunta bien a tu archivo
 import { Edit } from "lucide-react"; // Asegurate que apunta bien a tu archivo
-import  {formatearFecha}  from "../lib/utils";
-//import type { Encomienda } from "@/types"
-import { IEncomienda,IEncomiendaVista } from "../interface";
+import { formatearFecha } from "../lib/utils";
+import { IEncomienda, IEncomiendaVista } from "../interface";
 
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from "@/components/ui/table"; // Asegurate que apunta bien a tu archivo
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 
-/* interface EncomiendaTableProps {
-  encomiendas: Encomienda[]
-  onView: (encomienda: Encomienda) => void
-  onEdit: (encomienda: Encomienda) => void
-  onDelete: (encomienda: Encomienda) => void
-  onAsignarChofer: (encomienda: Encomienda) => void
-}
- */
+
 interface EncomiendaTableProps {
   encomiendas: IEncomiendaVista[]
   onView: (encomienda: IEncomiendaVista) => void
@@ -32,7 +17,7 @@ interface EncomiendaTableProps {
 }
 
 
-export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:EncomiendaTableProps) {
+export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }: EncomiendaTableProps) {
   const [encomiendas, setEncomiendas] = useState<IEncomiendaVista[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -58,27 +43,23 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
   if (loading) return <p className="p-4">Cargando encomiendas...</p>;
   if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
 
-  function iconoEstado(estado:IEncomiendaVista["estado"]) {
+  function iconoEstado(estado: IEncomiendaVista["estado"]) {
     switch (estado) {
       case "Pendiente":
         return <Clock className="h-4 w-4 text-yellow-500" />
-      case "En tránsito":
-        return <Truck className="h-4 w-4 text-blue-500" />
       case "Entregada":
         return <CheckCircle className="h-4 w-4 text-green-500" />
     }
   }
 
- const getEstadoText = (estado:IEncomiendaVista["estado"]) => {
+  const getEstadoText = (estado: IEncomiendaVista["estado"]) => {
     switch (estado) {
       case "Pendiente":
         return "Pendiente"
-      case "En tránsito":
-        return "En tránsito"
       case "Entregada":
         return "Entregada"
     }
-  } 
+  }
 
   return (
     <div className="rounded-md border border-gray-200 shadow-sm overflow-hidden">
@@ -97,7 +78,7 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
         </TableHeader>
         <TableBody>
           {encomiendas.map((encomienda) => (
-            <TableRow 
+            <TableRow
               key={encomienda.id}
               className="cursor-pointer hover:bg-muted/50 "
               onClick={() => {
@@ -106,8 +87,8 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
               }}
             >
               <TableCell className="font-medium"><strong>{encomienda.cliente.nombre}</strong></TableCell>
-              <TableCell>{encomienda.origen_id}</TableCell>
-              <TableCell>{encomienda.destino_id}</TableCell>
+              <TableCell>{encomienda.origen.nombre}</TableCell>
+              <TableCell>{encomienda.destino.nombre}</TableCell>
               <TableCell>{encomienda.direccion_destino}</TableCell>
               <TableCell>{/* encomienda.estado */}
                 <div className="flex items-center p-2 gap-2">
@@ -125,14 +106,14 @@ export function EncomiendaTable({ onView, onEdit, onDelete, onAsignarChofer }:En
                     <Edit className="h-4 w-4" />
                     <span className="sr-only">Editar</span>
                   </Button>
-                   <Button variant="ghost" size="icon" onClick={() => onAsignarChofer(encomienda)}>
+                  <Button variant="ghost" size="icon" onClick={() => onAsignarChofer(encomienda)}>
                     <User className="h-4 w-4" />
                     <span className="sr-only">Asignar chofer</span>
                   </Button>
                   <Button variant="ghost" size="icon" onClick={() => onDelete(encomienda)}>
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Eliminar</span>
-                  </Button>  
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>

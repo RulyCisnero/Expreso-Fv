@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import pool from '../../database/connectionPostgreSQL.ts' // o como tengas configurada tu conexión
-import { IEncomienda } from '../../interfaces/encomienda.ts';
+import pool from '../../database/connectionPostgreSQL.ts' 
+import { IEncomienda } from '../../interfaces/Index.ts';
 
 /**
  * Validar que solo se modifiquen los campos permitidos.

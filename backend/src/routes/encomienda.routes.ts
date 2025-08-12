@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', encomiendaController.createEncomienda);
 router.get('/:id', encomiendaController.getEncomiendaById);
 router.get('/', encomiendaController.getAllEncomiendas);
-router.get('/', encomiendaController.getFilteredEncomiendas);
+//router.get('/', encomiendaController.getFilteredEncomiendas);
 router.put('/:id',validarCamposEncomiendaPut, encomiendaController.updateEncomienda);
 router.put('/:id/estado', encomiendaController.actualizarEstadoEncomienda);
 router.delete('/:id', encomiendaController.deleteEncomienda);

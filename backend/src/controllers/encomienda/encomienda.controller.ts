@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import EncomiendaModel from "../../models/encomienda/encomiendaModel.ts";
+import { IEncomiendaVista } from '../../interfaces/encomienda.ts';
 
 const estadosValidos = ['Pendiente', 'Entregada'];
 export class EncomiendaController {
@@ -18,7 +19,7 @@ export class EncomiendaController {
     async getEncomiendaById(req: Request, res: Response): Promise<void> {
         try {
             const id = parseInt(req.params.id);
-            const encomienda = await EncomiendaModel.getEncomiendaById(id);
+            const encomienda : IEncomiendaVista | null = await EncomiendaModel.getEncomiendaById(id);
 
             if (!encomienda) {
                 res.status(404).json({ message: 'Encomienda no encontrada' });
@@ -34,7 +35,7 @@ export class EncomiendaController {
 
     async getAllEncomiendas(req: Request, res: Response): Promise<void> {
         try {
-            const encomiendas = await EncomiendaModel.getAllEncomiendas();
+            const encomiendas: IEncomiendaVista[] = await EncomiendaModel.getAllEncomiendas();
             res.status(200).json(encomiendas);
         } catch (error) {
             console.error("❌ Error al obtener encomiendas:", error);
@@ -42,7 +43,7 @@ export class EncomiendaController {
         }
     }
 
-    async getFilteredEncomiendas(req: Request, res: Response): Promise<void> {
+    /* async getFilteredEncomiendas(req: Request, res: Response): Promise<void> {
         try {
             const { estado, cliente_id, chofer_id } = req.query;
 
@@ -58,7 +59,7 @@ export class EncomiendaController {
             console.error('❌ Error al obtener encomiendas filtradas:', error);
             res.status(500).json({ message: 'Error en el servidor al obtener encomiendas filtradas' });
         }
-    }
+    } */
 
     async updateEncomienda(req: Request, res: Response): Promise<void> {
         try {
